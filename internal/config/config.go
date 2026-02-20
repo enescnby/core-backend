@@ -1,0 +1,49 @@
+package config
+
+import (
+	"os"
+
+	"core-backend/pkg/logger"
+
+	"github.com/joho/godotenv"
+)
+
+type Config struct {
+	AppPort    string
+	DBHost     string
+	DBUser     string
+	DBPassword string
+	DBName     string
+	DBPort     string
+	DBSSLMode  string
+	DBTimeZone string
+}
+
+var AppConfig Config
+
+func LoadConfig() {
+	err := godotenv.Load()
+	if err != nil {
+		logger.Log.Warn(".env file can not be found")
+	}
+
+	AppConfig = Config{
+		AppPort:    getEnv("APP_PORT", ""),
+		DBHost:     getEnv("DB_HOST", ""),
+		DBUser:     getEnv("DB_USER", ""),
+		DBPassword: getEnv("DB_PASSWORD", ""),
+		DBName:     getEnv("DB_NAME", ""),
+		DBPort:     getEnv("DB_PORT", ""),
+		DBSSLMode:  getEnv("DB_SSL_MODE", "disable"),
+		DBTimeZone: getEnv("DB_TIMEZONE", "Europe/Istanbul"),
+	}
+
+	logger.Log.Info("Configuration successfully imported!")
+}
+
+func getEnv(key, fallback string) string {
+	if value, exists := os.LookupEnv(key); exists {
+		return value
+	}
+	return fallback
+}
