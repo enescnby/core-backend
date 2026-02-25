@@ -17,6 +17,7 @@ type Config struct {
 	DBPort     string
 	DBSSLMode  string
 	DBTimeZone string
+	JWTSecret  string
 }
 
 var AppConfig Config
@@ -36,6 +37,7 @@ func LoadConfig() {
 		DBPort:     getEnv("DB_PORT", ""),
 		DBSSLMode:  getEnv("DB_SSL_MODE", "disable"),
 		DBTimeZone: getEnv("DB_TIMEZONE", "Europe/Istanbul"),
+		JWTSecret:  getEnv("JWT_SECRET", ""),
 	}
 
 	logger.Log.Info("Configuration successfully imported!")
