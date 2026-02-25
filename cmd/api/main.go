@@ -21,7 +21,10 @@ func main() {
 	defer database.Close()
 
 	database.Migrate()
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 	app := fiber.New()
 
 	app.Get("/keys/:id", handlers.GetPublicKey)

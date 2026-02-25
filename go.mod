@@ -13,7 +13,19 @@ require (
 )
 
 require (
+	github.com/google/uuid v1.6.0
+	github.com/joho/godotenv v1.5.1
+	go.uber.org/zap v1.27.1
+	gorm.io/driver/postgres v1.6.0
+	gorm.io/gorm v1.31.1
+)
+
+require (
 	github.com/andybalholm/brotli v1.1.0 // indirect
+<<<<<<< Updated upstream
+=======
+	github.com/gofiber/fiber/v2 v2.52.11 // indirect
+>>>>>>> Stashed changes
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
 	github.com/jackc/pgx/v5 v5.6.0 // indirect
@@ -25,6 +37,10 @@ require (
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.16 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
+<<<<<<< Updated upstream
+=======
+	github.com/stretchr/testify v1.10.0 // indirect
+>>>>>>> Stashed changes
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.51.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
