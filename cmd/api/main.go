@@ -8,6 +8,8 @@ import (
 	"core-backend/internal/config"
 	"core-backend/internal/database"
 	"core-backend/internal/handlers"
+	"core-backend/internal/repositories"
+	"core-backend/internal/services"
 	"core-backend/pkg/logger"
 )
 
@@ -21,14 +23,15 @@ func main() {
 	defer database.Close()
 
 	database.Migrate()
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
 	app := fiber.New()
 
-	app.Get("/keys/:id", handlers.GetPublicKey)
+	keyRepo := repositories.NewKeyRepository(database.DB)
+	keyService := services.NewKeyService(keyRepo)
+	keyHandler := handlers.NewKeyHandler(keyService)
 
-	logger.Log.Info("CoreGuard API 3000 portunda başlatılıyor...")
-	log.Fatal(app.Listen(":3000"))
+	app.Get("/keys/:id", keyHandler.GetPublicKey)
+
+	logger.Log.Info("CoreGuard API başlatılıyor...")
+	log.Fatal(app.Listen(":8080"))
 }
