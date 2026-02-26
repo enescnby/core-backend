@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"core-backend/internal/database"
 	"core-backend/internal/models"
 	"core-backend/pkg/logger"
 	"errors"
@@ -21,8 +20,8 @@ type userRepository struct {
 	db *gorm.DB
 }
 
-func NewUserRepository() UserRepository {
-	return &userRepository{db: database.DB}
+func NewUserRepository(db *gorm.DB) UserRepository {
+	return &userRepository{db: db}
 }
 
 func (r *userRepository) CreateUser(user *models.User) error {

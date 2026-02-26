@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"core-backend/internal/database"
 	"core-backend/internal/models"
 	"core-backend/pkg/logger"
 
@@ -17,8 +16,8 @@ type auditRepository struct {
 	db *gorm.DB
 }
 
-func NewAuditRepository() AuditRepository {
-	return &auditRepository{db: database.DB}
+func NewAuditRepository(db *gorm.DB) AuditRepository {
+	return &auditRepository{db: db}
 }
 
 func (r *auditRepository) LogEvent(audit *models.SecurityAuditLog) error {

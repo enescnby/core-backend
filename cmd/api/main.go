@@ -1,6 +1,7 @@
 package main
 
 import (
+	"core-backend/internal/middleware"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -27,11 +28,26 @@ func main() {
 	app := fiber.New()
 
 	keyRepo := repositories.NewKeyRepository(database.DB)
+	userRepo := repositories.NewUserRepository(database.DB)
+	auditRepo := repositories.NewAuditRepository(database.DB)
+
+	authService := services.NewAuthService(userRepo, auditRepo)
 	keyService := services.NewKeyService(keyRepo)
+
+	authHandler := handlers.NewAuthHandler(authService)
 	keyHandler := handlers.NewKeyHandler(keyService)
 
-	app.Get("/keys/:id", keyHandler.GetPublicKey)
+	api := app.Group("/api")
+	v1 := api.Group("/v1")
 
-	logger.Log.Info("CoreGuard API başlatılıyor...")
-	log.Fatal(app.Listen(":8080"))
+	authGroup := v1.Group("/auth")
+	authGroup.Post("/register", authHandler.Register)
+	authGroup.Post("/login/init", authHandler.LoginInit)
+	authGroup.Post("/login/verify", authHandler.LoginVerify)
+
+	keys := v1.Group("/keys", middleware.Protected())
+	keys.Get("/:id", keyHandler.GetPublicKey)
+
+	logger.Log.Info("CoreGuard API is starting...")
+	log.Fatal(app.Listen(config.AppConfig.AppPort))
 }
