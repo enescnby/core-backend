@@ -12,8 +12,11 @@ import (
 
 type UserRepository interface {
 	CreateUser(user *models.User) error
+	GetUserByID(userID uuid.UUID) (*models.User, error)
+	GetDeviceByUserID(userID uuid.UUID) (*models.UserDevice, error)
 	GetUserByCoreGuardID(coreGuardID string) (*models.User, error)
 	UpdateDevice(userID uuid.UUID, newDevice *models.UserDevice) error
+	GetUserForLookup(coreGuardID string) (*models.User, error)
 }
 
 type userRepository struct {
@@ -32,6 +35,21 @@ func (r *userRepository) CreateUser(user *models.User) error {
 	return nil
 }
 
+func (r *userRepository) GetUserByID(userID uuid.UUID) (*models.User, error) {
+	var user models.User
+
+	if err := r.db.Where("user_id = ?", userID).First(&user).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			logger.Log.Warn("user not found", zap.String("userID", userID.String()))
+			return nil, err
+		}
+		logger.Log.Error("database error while fetching user", zap.Error(err))
+		return nil, err
+	}
+
+	return &user, nil
+}
+
 func (r *userRepository) GetUserByCoreGuardID(coreGuardID string) (*models.User, error) {
 	var user models.User
 
@@ -47,6 +65,16 @@ func (r *userRepository) GetUserByCoreGuardID(coreGuardID string) (*models.User,
 	return &user, nil
 }
 
+func (r *userRepository) GetDeviceByUserID(userID uuid.UUID) (*models.UserDevice, error) {
+	var device models.UserDevice
+
+	err := r.db.Where("user_id = ?", userID).First(&device).Error
+	if err != nil {
+		return nil, err
+	}
+	return &device, nil
+}
+
 func (r *userRepository) UpdateDevice(userID uuid.UUID, newDevice *models.UserDevice) error {
 	err := r.db.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Where("user_id = ?", userID).Delete(&models.UserDevice{}).Error; err != nil {
@@ -60,4 +88,24 @@ func (r *userRepository) UpdateDevice(userID uuid.UUID, newDevice *models.UserDe
 		return err
 	}
 	return nil
+}
+
+func (r *userRepository) GetUserForLookup(coreGuardID string) (*models.User, error) {
+	var user models.User
+
+	err := r.db.
+		Preload("Key").
+		Where("core_guard_id = ?", coreGuardID).
+		First(&user).Error
+
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			logger.Log.Warn("User can not found for lookup", zap.String("core_guard_id", coreGuardID))
+			return nil, err
+		}
+		logger.Log.Error("Database error while lookup", zap.Error(err))
+		return nil, err
+	}
+
+	return &user, err
 }

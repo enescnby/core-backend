@@ -3,6 +3,7 @@ package websocket
 import (
 	"core-backend/internal/models"
 	"core-backend/internal/repositories"
+	"core-backend/internal/services"
 	"core-backend/pb"
 	"core-backend/pkg/logger"
 	"fmt"
@@ -22,15 +23,23 @@ type ConnectionManager interface {
 }
 
 type connectionManager struct {
-	clients map[string]*websocket.Conn
-	mu      sync.RWMutex
-	repo    repositories.MessageRepository
+	clients    map[string]*websocket.Conn
+	mu         sync.RWMutex
+	msgRepo    repositories.MessageRepository
+	userRepo   repositories.UserRepository
+	fcmService services.FCMService
 }
 
-func NewConnectionManager(repo repositories.MessageRepository) ConnectionManager {
+func NewConnectionManager(
+	msgRepo repositories.MessageRepository,
+	userRepo repositories.UserRepository,
+	fcmService services.FCMService,
+) ConnectionManager {
 	return &connectionManager{
-		clients: make(map[string]*websocket.Conn),
-		repo:    repo,
+		clients:    make(map[string]*websocket.Conn),
+		msgRepo:    msgRepo,
+		userRepo:   userRepo,
+		fcmService: fcmService,
 	}
 }
 
@@ -82,9 +91,17 @@ func (m *connectionManager) ReadPump(userID string, conn *websocket.Conn) {
 					MessageType: int(payload.Type),
 				}
 
-				saveErr := m.repo.SaveMessage(offlineMsg)
+				saveErr := m.msgRepo.SaveMessage(offlineMsg)
 				if saveErr == nil {
 					logger.Log.Info("user is offline, message saved", zap.String("msg_id", payload.MessageId))
+
+					device, repoErr := m.userRepo.GetDeviceByUserID(receiverUUID)
+
+					if repoErr == nil && device.FCMToken != "" {
+						_ = m.fcmService.SendWakeUpSignal(device.FCMToken)
+					} else {
+						logger.Log.Warn("FCM Token not found, WakeUp signal can not send", zap.String("userID", receiverID))
+					}
 				}
 			}
 		case *pb.WebSocketMessage_Receipt:
@@ -93,7 +110,7 @@ func (m *connectionManager) ReadPump(userID string, conn *websocket.Conn) {
 
 			if receipt.Status == pb.ReceiptStatus_DELIVERED {
 				msgUUID, _ := uuid.Parse(receipt.MessageId)
-				_ = m.repo.MarkAsDelivered([]uuid.UUID{msgUUID})
+				_ = m.msgRepo.MarkAsDelivered([]uuid.UUID{msgUUID})
 			}
 
 			_ = m.SendToUser(receiverID, rawPayload)
