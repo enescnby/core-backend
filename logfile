@@ -1,0 +1,17 @@
+2026-03-02 18:42:43.327 +03 [19032] LOG:  starting PostgreSQL 18.3 on x86_64-windows, compiled by msvc-19.44.35222, 64-bit
+2026-03-02 18:42:43.330 +03 [19032] LOG:  listening on IPv6 address "::1", port 5432
+2026-03-02 18:42:43.330 +03 [19032] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2026-03-02 18:42:43.377 +03 [24056] LOG:  database system was shut down at 2026-03-02 18:42:21 +03
+2026-03-02 18:42:43.382 +03 [19032] LOG:  database system is ready to accept connections
+2026-03-02 18:43:18.904 +03 [26324] FATAL:  conversion between WIN1254 and WIN1252 is not supported
+2026-03-02 18:43:28.012 +03 [7312] FATAL:  conversion between WIN1254 and WIN1252 is not supported
+2026-03-02 18:47:43.378 +03 [6196] LOG:  checkpoint starting: time
+2026-03-02 18:47:47.974 +03 [6196] LOG:  checkpoint complete: wrote 43 buffers (0.3%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=4.569 s, sync=0.018 s, total=4.596 s; sync files=11, longest=0.006 s, average=0.002 s; distance=333 kB, estimate=333 kB; lsn=0/1844BC0, redo lsn=0/1844B30
+2026-03-02 19:22:44.055 +03 [6196] LOG:  checkpoint starting: time
+2026-03-02 19:22:44.183 +03 [6196] LOG:  checkpoint complete: wrote 1 buffers (0.0%), wrote 0 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.103 s, sync=0.002 s, total=0.129 s; sync files=1, longest=0.002 s, average=0.002 s; distance=0 kB, estimate=300 kB; lsn=0/1844E30, redo lsn=0/1844DD8
+2026-03-02 19:36:07.908 +03 [19032] LOG:  client backend (PID 15668) was terminated by exception 0xC000013A
+2026-03-02 19:36:07.908 +03 [19032] DETAIL:  Failed process was running: CREATE DATABASE coreguard;
+2026-03-02 19:36:07.908 +03 [19032] HINT:  See C include file "ntstatus.h" for a description of the hexadecimal value.
+2026-03-02 19:36:07.908 +03 [19032] LOG:  terminating any other active server processes
+2026-03-02 19:36:07.911 +03 [19032] LOG:  received fast shutdown request
+^C
