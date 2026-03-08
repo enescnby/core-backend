@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+option go_package = "./pb";
+
+package pb;
+
+enum MessageType {
+  TEXT = 0;
+  IMAGE = 1;
+}
+
+enum ReceiptStatus {
+  DELIVERED = 0;
+  READ = 1;
+}
+
+message EncryptedPayload {
+  string message_id = 1;
+  string sender_id = 2;
+  string receiver_id = 3;
+
+  bytes ciphertext = 4;
+  bytes nonce = 5;
+  bytes auth_tag = 6;
+
+  int64 timestamp = 7;
+  MessageType type = 8;
+}
+
+message DeliveryReceipt {
+  string message_id = 1;
+  string sender_id = 2;
+  string receiver_id = 3;
+  ReceiptStatus status = 4;
+  int64 timestamp = 5;
+}
+
+message WebSocketMessage {
+  oneof content {
+    EncryptedPayload payload = 1;
+    DeliveryReceipt receipt = 2;
+  }
+}

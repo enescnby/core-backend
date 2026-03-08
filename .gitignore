@@ -30,3 +30,5 @@ Icon
 Thumbs.db
 ehthumbs.db
 Desktop.ini
+logfile
+*.log

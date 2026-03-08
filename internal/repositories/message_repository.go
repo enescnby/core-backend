@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"core-backend/internal/database"
 	"core-backend/internal/models"
 	"core-backend/pkg/logger"
 
@@ -20,8 +19,8 @@ type messageRepository struct {
 	db *gorm.DB
 }
 
-func NewMessageRepository() MessageRepository {
-	return &messageRepository{db: database.DB}
+func NewMessageRepository(db *gorm.DB) MessageRepository {
+	return &messageRepository{db: db}
 }
 
 func (r *messageRepository) SaveMessage(message *models.EncryptedMessages) error {

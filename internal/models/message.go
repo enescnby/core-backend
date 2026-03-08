@@ -7,14 +7,15 @@ import (
 )
 
 type EncryptedMessages struct {
-	MessageID  uuid.UUID `gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
-	SenderID   uuid.UUID `gorm:"type:uuid;index;not null"`
-	ReceiverID uuid.UUID `gorm:"type:uuid;index;not null"`
-	Ciphertext []byte    `gorm:"type:bytea;not null"`
-	Nonce      string    `gorm:"type:varchar;not null"`
-	AuthTag    string    `gorm:"type:varchar;not null"`
-	KeyVersion int       `gorm:"type:int"`
-	CreatedAt  time.Time `gorm:"autoCreateTime"`
+	MessageID   uuid.UUID `gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
+	SenderID    uuid.UUID `gorm:"type:uuid;index;not null"`
+	ReceiverID  uuid.UUID `gorm:"type:uuid;index;not null"`
+	Ciphertext  []byte    `gorm:"type:bytea;not null"`
+	Nonce       []byte    `gorm:"type:bytea;not null"`
+	AuthTag     []byte    `gorm:"type:bytea;not null"`
+	MessageType int       `gorm:"type:smallint;not null;default:0"`
+	KeyVersion  int       `gorm:"type:int"`
+	CreatedAt   time.Time `gorm:"autoCreateTime"`
 
 	Status []DeliveryStatus `gorm:"foreignKey:MessageID"`
 }
