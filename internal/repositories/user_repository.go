@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"context"
 	"core-backend/internal/models"
 	"core-backend/pkg/logger"
 	"errors"
@@ -16,7 +17,7 @@ type UserRepository interface {
 	GetDeviceByUserID(userID uuid.UUID) (*models.UserDevice, error)
 	GetUserByCoreGuardID(coreGuardID string) (*models.User, error)
 	UpdateDevice(userID uuid.UUID, newDevice *models.UserDevice) error
-	GetUserForLookup(coreGuardID string) (*models.User, error)
+	GetUserForLookup(ctx context.Context, coreGuardID string) (*models.User, error)
 }
 
 type userRepository struct {
@@ -90,10 +91,10 @@ func (r *userRepository) UpdateDevice(userID uuid.UUID, newDevice *models.UserDe
 	return nil
 }
 
-func (r *userRepository) GetUserForLookup(coreGuardID string) (*models.User, error) {
+func (r *userRepository) GetUserForLookup(ctx context.Context, coreGuardID string) (*models.User, error) {
 	var user models.User
 
-	err := r.db.
+	err := r.db.WithContext(ctx).
 		Preload("Key").
 		Where("core_guard_id = ?", coreGuardID).
 		First(&user).Error

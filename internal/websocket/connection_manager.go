@@ -49,14 +49,14 @@ func (m *connectionManager) Register(userID string, conn *websocket.Conn) {
 
 	m.clients[userID] = conn
 
-	logger.Log.Info("user connected to WebSocket", zap.String("core_guard_id", userID))
+	logger.Log.Info("user connected to WebSocket", zap.String("user_id", userID))
 }
 
 func (m *connectionManager) ReadPump(userID string, conn *websocket.Conn) {
 	for {
 		messageType, rawPayload, err := conn.ReadMessage()
 		if err != nil {
-			logger.Log.Info("user tunnel disconnected", zap.String("core_guard_id", userID))
+			logger.Log.Info("user tunnel disconnected", zap.String("user_id", userID))
 			break
 		}
 
@@ -100,7 +100,7 @@ func (m *connectionManager) ReadPump(userID string, conn *websocket.Conn) {
 					if repoErr == nil && device.FCMToken != "" {
 						_ = m.fcmService.SendWakeUpSignal(device.FCMToken)
 					} else {
-						logger.Log.Warn("FCM Token not found, WakeUp signal can not send", zap.String("userID", receiverID))
+						logger.Log.Warn("FCM Token not found for given ID, WakeUp signal can not send", zap.String("user_id", receiverID))
 					}
 				}
 			}
@@ -127,7 +127,7 @@ func (m *connectionManager) Unregister(userID string) {
 
 		delete(m.clients, userID)
 
-		logger.Log.Info("connection closed, user cleaned from RAM", zap.String("core_guard_id", userID))
+		logger.Log.Info("connection closed, user cleaned from RAM", zap.String("user_id", userID))
 	}
 }
 

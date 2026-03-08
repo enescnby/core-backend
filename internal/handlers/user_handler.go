@@ -22,7 +22,7 @@ func (h *UserHandler) GetUserForLookup(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "ID needed"})
 	}
 
-	res, err := h.userService.GetUserForLookup(coreGuardID)
+	res, err := h.userService.GetUserForLookup(c.UserContext(), coreGuardID)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": "user not found"})
