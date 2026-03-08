@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"context"
 	"core-backend/internal/models"
 	"core-backend/pkg/logger"
 
@@ -11,7 +12,7 @@ import (
 
 type MessageRepository interface {
 	SaveMessage(message *models.EncryptedMessages) error
-	GetUndeliveredMessages(receiverID uuid.UUID) ([]models.EncryptedMessages, error)
+	GetUndeliveredMessages(ctx context.Context, receiverID uuid.UUID) ([]models.EncryptedMessages, error)
 	MarkAsDelivered(messageIDs []uuid.UUID) error
 }
 
@@ -31,10 +32,10 @@ func (r *messageRepository) SaveMessage(message *models.EncryptedMessages) error
 	return nil
 }
 
-func (r *messageRepository) GetUndeliveredMessages(receiverID uuid.UUID) ([]models.EncryptedMessages, error) {
+func (r *messageRepository) GetUndeliveredMessages(ctx context.Context, receiverID uuid.UUID) ([]models.EncryptedMessages, error) {
 	var messages []models.EncryptedMessages
 
-	err := r.db.Preload("Status").
+	err := r.db.WithContext(ctx).Preload("Status").
 		Joins("JOIN delivery_statues ON delivery_statues.message_id = encrypted_messages.message_id").
 		Where("encrypted_messages.receiver_id = ? AND delivery_statues.is_delivered = ?", receiverID, false).
 		Find(&messages).Error

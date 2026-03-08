@@ -1,6 +1,7 @@
 package main
 
 import (
+	"core-backend/pkg/firebase"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -28,6 +29,9 @@ func main() {
 
 	app := fiber.New()
 
+	firebaseApp := firebase.InitFirebase()
+	firebaseService := services.NewFCMService(firebaseApp)
+
 	keyRepo := repositories.NewKeyRepository(database.DB)
 	userRepo := repositories.NewUserRepository(database.DB)
 	auditRepo := repositories.NewAuditRepository(database.DB)
@@ -36,7 +40,7 @@ func main() {
 	authService := services.NewAuthService(userRepo, auditRepo)
 	keyService := services.NewKeyService(keyRepo)
 
-	cm := websocket.NewConnectionManager(msgRepo)
+	cm := websocket.NewConnectionManager(msgRepo, userRepo, firebaseService)
 	wsHandler := handlers.NewWebSocketHandler(cm)
 
 	authHandler := handlers.NewAuthHandler(authService)
