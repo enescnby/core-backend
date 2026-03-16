@@ -17,12 +17,14 @@ type User struct {
 }
 
 type UserKey struct {
-	KeyID               int       `gorm:"primaryKey;autoIncrement"`
-	UserID              uuid.UUID `gorm:"type:uuid;index;not null"`
-	PublicKey           string    `gorm:"type:varchar;not null"`
-	EncryptedPrivateKey string    `gorm:"type:varchar;not null"`
-	Salt                string    `gorm:"type:varchar;not null"`
-	CreatedAt           time.Time `gorm:"autoCreateTime"`
+	KeyID                         int       `gorm:"primaryKey;autoIncrement"`
+	UserID                        uuid.UUID `gorm:"type:uuid;index;not null"`
+	IdentityPublicKey             string    `gorm:"type:varchar;not null"`
+	EncryptedIdentityPrivateKey   string    `gorm:"type:varchar;not null"`
+	EncryptionPublicKey           string    `gorm:"type:varchar;not null"`
+	EncryptedEncryptionPrivateKey string    `gorm:"type:varchar;not null"`
+	Salt                          string    `gorm:"type:varchar;not null"`
+	CreatedAt                     time.Time `gorm:"autoCreateTime"`
 }
 
 type UserDevice struct {

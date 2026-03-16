@@ -25,7 +25,7 @@ func (s *userService) GetUserForLookup(ctx context.Context, coreGuardID string) 
 	}
 
 	return &dto.LookupResponse{
-		UserID:    user.UserID.String(),
-		PublicKey: user.Key.PublicKey,
+		UserID:              user.UserID.String(),
+		EncryptionPublicKey: user.Key.EncryptionPublicKey,
 	}, err
 }

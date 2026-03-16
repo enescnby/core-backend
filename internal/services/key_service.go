@@ -23,6 +23,6 @@ func (s *keyService) GetPublicKey(ctx context.Context, targetID string) (*dto.Ge
 	}
 	return &dto.GetPublicKeyResponse{
 		CoreGuardID: targetID,
-		PublicKey:   uk.PublicKey,
+		PublicKey:   uk.IdentityPublicKey,
 	}, nil
 }

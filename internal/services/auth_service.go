@@ -43,9 +43,11 @@ func (s *authService) Register(req *dto.RegisterRequest) (*dto.RegisterResponse,
 	newUser := &models.User{
 		CoreGuardID: coreGuardID,
 		Key: models.UserKey{
-			PublicKey:           req.PublicKey,
-			EncryptedPrivateKey: req.EncryptedPrivateKey,
-			Salt:                req.Salt,
+			IdentityPublicKey:             req.IdentityPublicKey,
+			EncryptedIdentityPrivateKey:   req.EncryptedIdentityPrivateKey,
+			EncryptionPublicKey:           req.EncryptionPublicKey,
+			EncryptedEncryptionPrivateKey: req.EncryptedEncryptionPrivateKey,
+			Salt:                          req.Salt,
 		},
 		Device: models.UserDevice{
 			FCMToken:    req.FCMToken,
@@ -88,9 +90,9 @@ func (s *authService) LoginInit(req *dto.LoginInitRequest) (*dto.LoginInitRespon
 	logger.Log.Info("challenge generated for user", zap.String("core_guard_id", req.CoreGuardID))
 
 	return &dto.LoginInitResponse{
-		EncryptedPrivateKey: user.Key.EncryptedPrivateKey,
-		Salt:                user.Key.Salt,
-		Challenge:           challenge,
+		EncryptedIdentityPrivateKey: user.Key.EncryptedIdentityPrivateKey,
+		Salt:                        user.Key.Salt,
+		Challenge:                   challenge,
 	}, nil
 }
 
@@ -111,7 +113,7 @@ func (s *authService) LoginVerify(req *dto.LoginVerifyRequest) (*dto.LoginVerify
 		return nil, errors.New("user not found")
 	}
 
-	pubKeyBytes, _ := hex.DecodeString(user.Key.PublicKey)
+	pubKeyBytes, _ := hex.DecodeString(user.Key.IdentityPublicKey)
 	signatureBytes, _ := hex.DecodeString(req.Signature)
 	challengeBytes, _ := hex.DecodeString(req.Challenge)
 
