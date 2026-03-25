@@ -1,15 +1,18 @@
 package dto
 
 type RegisterRequest struct {
-	PublicKey           string `json:"public_key"`
-	EncryptedPrivateKey string `json:"encrypted_private_key"`
-	Salt                string `json:"salt"`
-	DeviceModel         string `json:"device_model"`
-	FCMToken            string `json:"fcm_token"`
+	IdentityPublicKey             string `json:"identity_public_key"`
+	EncryptedIdentityPrivateKey   string `json:"encrypted_identity_private_key"`
+	EncryptionPublicKey           string `json:"encryption_public_key"`
+	EncryptedEncryptionPrivateKey string `json:"encrypted_encryption_private_key"`
+	Salt                          string `json:"salt"`
+	DeviceModel                   string `json:"device_model"`
+	FCMToken                      string `json:"fcm_token"`
 }
 
 type RegisterResponse struct {
 	CoreGuardID string `json:"core_guard_id"`
+	UserID      string `json:"user_id"`
 	Message     string `json:"message"`
 }
 
@@ -18,9 +21,9 @@ type LoginInitRequest struct {
 }
 
 type LoginInitResponse struct {
-	EncryptedPrivateKey string `json:"encrypted_private_key"`
-	Salt                string `json:"salt"`
-	Challenge           string `json:"challenge"`
+	EncryptedIdentityPrivateKey string `json:"encrypted_identity_private_key"`
+	Salt                        string `json:"salt"`
+	Challenge                   string `json:"challenge"`
 }
 
 type LoginVerifyRequest struct {
@@ -32,6 +35,8 @@ type LoginVerifyRequest struct {
 }
 
 type LoginVerifyResponse struct {
+	CoreGuardID string `json:"core_guard_id"`
+	UserID      string `json:"user_id"`
 	AccessToken string `json:"access_token"`
 	Message     string `json:"message"`
 }

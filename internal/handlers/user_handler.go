@@ -17,7 +17,7 @@ func NewUserHandler(service services.UserService) *UserHandler {
 }
 
 func (h *UserHandler) GetUserForLookup(c *fiber.Ctx) error {
-	coreGuardID := c.Params("core_guard_id")
+	coreGuardID := c.Params("shadeId")
 	if coreGuardID == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "ID needed"})
 	}

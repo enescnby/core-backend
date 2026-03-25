@@ -17,22 +17,24 @@ enum ReceiptStatus {
 message EncryptedPayload {
   string message_id = 1;
   string sender_id = 2;
-  string receiver_id = 3;
+  string sender_shade_id = 3;
+  string receiver_id = 4;
 
-  bytes ciphertext = 4;
-  bytes nonce = 5;
-  bytes auth_tag = 6;
+  bytes ciphertext = 5;
+  bytes nonce = 6;
+  bytes auth_tag = 7;
 
-  int64 timestamp = 7;
-  MessageType type = 8;
+  int64 timestamp = 8;
+  MessageType type = 9;
 }
 
 message DeliveryReceipt {
   string message_id = 1;
   string sender_id = 2;
-  string receiver_id = 3;
-  ReceiptStatus status = 4;
-  int64 timestamp = 5;
+  string sender_shade_id = 3;
+  string receiver_id = 4;
+  ReceiptStatus status = 5;
+  int64 timestamp = 6;
 }
 
 message WebSocketMessage {

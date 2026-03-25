@@ -39,12 +39,14 @@ func main() {
 
 	authService := services.NewAuthService(userRepo, auditRepo)
 	keyService := services.NewKeyService(keyRepo)
+	userService := services.NewUserService(userRepo)
 
 	cm := websocket.NewConnectionManager(msgRepo, userRepo, firebaseService)
 	wsHandler := handlers.NewWebSocketHandler(cm)
 
 	authHandler := handlers.NewAuthHandler(authService)
 	keyHandler := handlers.NewKeyHandler(keyService)
+	userHandler := handlers.NewUserHandler(userService)
 
 	api := app.Group("/api")
 	v1 := api.Group("/v1")
@@ -56,6 +58,9 @@ func main() {
 
 	keys := v1.Group("/keys", middleware.Protected())
 	keys.Get("/:id", keyHandler.GetPublicKey)
+
+	user := v1.Group("/user", middleware.Protected())
+	user.Get("/lookup/:shadeId", userHandler.GetUserForLookup)
 
 	v1.Get("/ws", wsHandler.UpgradeAndServe)
 
