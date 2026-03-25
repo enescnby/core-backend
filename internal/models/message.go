@@ -12,7 +12,6 @@ type EncryptedMessages struct {
 	ReceiverID  uuid.UUID `gorm:"type:uuid;index;not null"`
 	Ciphertext  []byte    `gorm:"type:bytea;not null"`
 	Nonce       []byte    `gorm:"type:bytea;not null"`
-	AuthTag     []byte    `gorm:"type:bytea;not null"`
 	MessageType int       `gorm:"type:smallint;not null;default:0"`
 	KeyVersion  int       `gorm:"type:int"`
 	CreatedAt   time.Time `gorm:"autoCreateTime"`

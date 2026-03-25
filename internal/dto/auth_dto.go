@@ -12,6 +12,7 @@ type RegisterRequest struct {
 
 type RegisterResponse struct {
 	CoreGuardID string `json:"core_guard_id"`
+	UserID      string `json:"user_id"`
 	Message     string `json:"message"`
 }
 
@@ -34,6 +35,8 @@ type LoginVerifyRequest struct {
 }
 
 type LoginVerifyResponse struct {
+	CoreGuardID string `json:"core_guard_id"`
+	UserID      string `json:"user_id"`
 	AccessToken string `json:"access_token"`
 	Message     string `json:"message"`
 }

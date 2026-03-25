@@ -78,7 +78,7 @@ func (m *connectionManager) ReadPump(userID string, conn *websocket.Conn) {
 			err := m.SendToUser(receiverID, rawPayload)
 			if err != nil {
 				msgUUID, _ := uuid.Parse(payload.MessageId)
-				senderUUID, _ := uuid.Parse(payload.SenderId)
+				senderUUID, _ := uuid.Parse(userID)
 				receiverUUID, _ := uuid.Parse(payload.ReceiverId)
 
 				offlineMsg := &models.EncryptedMessages{
@@ -87,7 +87,6 @@ func (m *connectionManager) ReadPump(userID string, conn *websocket.Conn) {
 					ReceiverID:  receiverUUID,
 					Ciphertext:  payload.Ciphertext,
 					Nonce:       payload.Nonce,
-					AuthTag:     payload.AuthTag,
 					MessageType: int(payload.Type),
 				}
 
@@ -145,6 +144,8 @@ func (m *connectionManager) SendToUser(receiverID string, payload []byte) error 
 	if err != nil {
 		return fmt.Errorf("failed to send message to user %s: %w", receiverID, err)
 	}
-
+	if err == nil {
+		logger.Log.Info("Message sent to user", zap.String("to", receiverID))
+	}
 	return nil
 }

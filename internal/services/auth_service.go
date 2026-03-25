@@ -72,6 +72,7 @@ func (s *authService) Register(req *dto.RegisterRequest) (*dto.RegisterResponse,
 
 	return &dto.RegisterResponse{
 		CoreGuardID: coreGuardID,
+		UserID:      newUser.UserID.String(),
 		Message:     "Account created successfully. Keep your CoreGuard ID and PIN safe",
 	}, nil
 }
@@ -155,6 +156,8 @@ func (s *authService) LoginVerify(req *dto.LoginVerifyRequest) (*dto.LoginVerify
 
 	return &dto.LoginVerifyResponse{
 		AccessToken: tokenString,
+		CoreGuardID: user.CoreGuardID,
+		UserID:      user.UserID.String(),
 		Message:     "Welcome back! Cryptographic verification successful.",
 	}, nil
 }

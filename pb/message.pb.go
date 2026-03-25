@@ -2,16 +2,17 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        v6.33.4
-// source: message.proto
+// source: proto/message.proto
 
 package pb
 
 import (
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
+
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -51,11 +52,11 @@ func (x MessageType) String() string {
 }
 
 func (MessageType) Descriptor() protoreflect.EnumDescriptor {
-	return file_message_proto_enumTypes[0].Descriptor()
+	return file_proto_message_proto_enumTypes[0].Descriptor()
 }
 
 func (MessageType) Type() protoreflect.EnumType {
-	return &file_message_proto_enumTypes[0]
+	return &file_proto_message_proto_enumTypes[0]
 }
 
 func (x MessageType) Number() protoreflect.EnumNumber {
@@ -64,7 +65,7 @@ func (x MessageType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use MessageType.Descriptor instead.
 func (MessageType) EnumDescriptor() ([]byte, []int) {
-	return file_message_proto_rawDescGZIP(), []int{0}
+	return file_proto_message_proto_rawDescGZIP(), []int{0}
 }
 
 type ReceiptStatus int32
@@ -97,11 +98,11 @@ func (x ReceiptStatus) String() string {
 }
 
 func (ReceiptStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_message_proto_enumTypes[1].Descriptor()
+	return file_proto_message_proto_enumTypes[1].Descriptor()
 }
 
 func (ReceiptStatus) Type() protoreflect.EnumType {
-	return &file_message_proto_enumTypes[1]
+	return &file_proto_message_proto_enumTypes[1]
 }
 
 func (x ReceiptStatus) Number() protoreflect.EnumNumber {
@@ -110,26 +111,27 @@ func (x ReceiptStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ReceiptStatus.Descriptor instead.
 func (ReceiptStatus) EnumDescriptor() ([]byte, []int) {
-	return file_message_proto_rawDescGZIP(), []int{1}
+	return file_proto_message_proto_rawDescGZIP(), []int{1}
 }
 
 type EncryptedPayload struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	MessageId     string                 `protobuf:"bytes,1,opt,name=message_id,json=messageId,proto3" json:"message_id,omitempty"`
 	SenderId      string                 `protobuf:"bytes,2,opt,name=sender_id,json=senderId,proto3" json:"sender_id,omitempty"`
-	ReceiverId    string                 `protobuf:"bytes,3,opt,name=receiver_id,json=receiverId,proto3" json:"receiver_id,omitempty"`
-	Ciphertext    []byte                 `protobuf:"bytes,4,opt,name=ciphertext,proto3" json:"ciphertext,omitempty"`
-	Nonce         []byte                 `protobuf:"bytes,5,opt,name=nonce,proto3" json:"nonce,omitempty"`
-	AuthTag       []byte                 `protobuf:"bytes,6,opt,name=auth_tag,json=authTag,proto3" json:"auth_tag,omitempty"`
-	Timestamp     int64                  `protobuf:"varint,7,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
-	Type          MessageType            `protobuf:"varint,8,opt,name=type,proto3,enum=pb.MessageType" json:"type,omitempty"`
+	SenderShadeId string                 `protobuf:"bytes,3,opt,name=sender_shade_id,json=senderShadeId,proto3" json:"sender_shade_id,omitempty"`
+	ReceiverId    string                 `protobuf:"bytes,4,opt,name=receiver_id,json=receiverId,proto3" json:"receiver_id,omitempty"`
+	Ciphertext    []byte                 `protobuf:"bytes,5,opt,name=ciphertext,proto3" json:"ciphertext,omitempty"`
+	Nonce         []byte                 `protobuf:"bytes,6,opt,name=nonce,proto3" json:"nonce,omitempty"`
+	AuthTag       []byte                 `protobuf:"bytes,7,opt,name=auth_tag,json=authTag,proto3" json:"auth_tag,omitempty"`
+	Timestamp     int64       `protobuf:"varint,8,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	Type          MessageType `protobuf:"varint,9,opt,name=type,proto3,enum=pb.MessageType" json:"type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *EncryptedPayload) Reset() {
 	*x = EncryptedPayload{}
-	mi := &file_message_proto_msgTypes[0]
+	mi := &file_proto_message_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -141,7 +143,7 @@ func (x *EncryptedPayload) String() string {
 func (*EncryptedPayload) ProtoMessage() {}
 
 func (x *EncryptedPayload) ProtoReflect() protoreflect.Message {
-	mi := &file_message_proto_msgTypes[0]
+	mi := &file_proto_message_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -154,7 +156,7 @@ func (x *EncryptedPayload) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EncryptedPayload.ProtoReflect.Descriptor instead.
 func (*EncryptedPayload) Descriptor() ([]byte, []int) {
-	return file_message_proto_rawDescGZIP(), []int{0}
+	return file_proto_message_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *EncryptedPayload) GetMessageId() string {
@@ -167,6 +169,13 @@ func (x *EncryptedPayload) GetMessageId() string {
 func (x *EncryptedPayload) GetSenderId() string {
 	if x != nil {
 		return x.SenderId
+	}
+	return ""
+}
+
+func (x *EncryptedPayload) GetSenderShadeId() string {
+	if x != nil {
+		return x.SenderShadeId
 	}
 	return ""
 }
@@ -217,16 +226,17 @@ type DeliveryReceipt struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	MessageId     string                 `protobuf:"bytes,1,opt,name=message_id,json=messageId,proto3" json:"message_id,omitempty"`
 	SenderId      string                 `protobuf:"bytes,2,opt,name=sender_id,json=senderId,proto3" json:"sender_id,omitempty"`
-	ReceiverId    string                 `protobuf:"bytes,3,opt,name=receiver_id,json=receiverId,proto3" json:"receiver_id,omitempty"`
-	Status        ReceiptStatus          `protobuf:"varint,4,opt,name=status,proto3,enum=pb.ReceiptStatus" json:"status,omitempty"`
-	Timestamp     int64                  `protobuf:"varint,5,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	SenderShadeId string                 `protobuf:"bytes,3,opt,name=sender_shade_id,json=senderShadeId,proto3" json:"sender_shade_id,omitempty"`
+	ReceiverId string        `protobuf:"bytes,4,opt,name=receiver_id,json=receiverId,proto3" json:"receiver_id,omitempty"`
+	Status     ReceiptStatus `protobuf:"varint,5,opt,name=status,proto3,enum=pb.ReceiptStatus" json:"status,omitempty"`
+	Timestamp  int64         `protobuf:"varint,6,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *DeliveryReceipt) Reset() {
 	*x = DeliveryReceipt{}
-	mi := &file_message_proto_msgTypes[1]
+	mi := &file_proto_message_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -238,7 +248,7 @@ func (x *DeliveryReceipt) String() string {
 func (*DeliveryReceipt) ProtoMessage() {}
 
 func (x *DeliveryReceipt) ProtoReflect() protoreflect.Message {
-	mi := &file_message_proto_msgTypes[1]
+	mi := &file_proto_message_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -251,7 +261,7 @@ func (x *DeliveryReceipt) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeliveryReceipt.ProtoReflect.Descriptor instead.
 func (*DeliveryReceipt) Descriptor() ([]byte, []int) {
-	return file_message_proto_rawDescGZIP(), []int{1}
+	return file_proto_message_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *DeliveryReceipt) GetMessageId() string {
@@ -264,6 +274,13 @@ func (x *DeliveryReceipt) GetMessageId() string {
 func (x *DeliveryReceipt) GetSenderId() string {
 	if x != nil {
 		return x.SenderId
+	}
+	return ""
+}
+
+func (x *DeliveryReceipt) GetSenderShadeId() string {
+	if x != nil {
+		return x.SenderShadeId
 	}
 	return ""
 }
@@ -302,7 +319,7 @@ type WebSocketMessage struct {
 
 func (x *WebSocketMessage) Reset() {
 	*x = WebSocketMessage{}
-	mi := &file_message_proto_msgTypes[2]
+	mi := &file_proto_message_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -314,7 +331,7 @@ func (x *WebSocketMessage) String() string {
 func (*WebSocketMessage) ProtoMessage() {}
 
 func (x *WebSocketMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_message_proto_msgTypes[2]
+	mi := &file_proto_message_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -327,7 +344,7 @@ func (x *WebSocketMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebSocketMessage.ProtoReflect.Descriptor instead.
 func (*WebSocketMessage) Descriptor() ([]byte, []int) {
-	return file_message_proto_rawDescGZIP(), []int{2}
+	return file_proto_message_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *WebSocketMessage) GetContent() isWebSocketMessage_Content {
@@ -371,32 +388,34 @@ func (*WebSocketMessage_Payload) isWebSocketMessage_Content() {}
 
 func (*WebSocketMessage_Receipt) isWebSocketMessage_Content() {}
 
-var File_message_proto protoreflect.FileDescriptor
+var File_proto_message_proto protoreflect.FileDescriptor
 
-const file_message_proto_rawDesc = "" +
+const file_proto_message_proto_rawDesc = "" +
 	"\n" +
-	"\rmessage.proto\x12\x02pb\"\x83\x02\n" +
+	"\x13proto/message.proto\x12\x02pb\"\xab\x02\n" +
 	"\x10EncryptedPayload\x12\x1d\n" +
 	"\n" +
 	"message_id\x18\x01 \x01(\tR\tmessageId\x12\x1b\n" +
-	"\tsender_id\x18\x02 \x01(\tR\bsenderId\x12\x1f\n" +
-	"\vreceiver_id\x18\x03 \x01(\tR\n" +
+	"\tsender_id\x18\x02 \x01(\tR\bsenderId\x12&\n" +
+	"\x0fsender_shade_id\x18\x03 \x01(\tR\rsenderShadeId\x12\x1f\n" +
+	"\vreceiver_id\x18\x04 \x01(\tR\n" +
 	"receiverId\x12\x1e\n" +
 	"\n" +
-	"ciphertext\x18\x04 \x01(\fR\n" +
+	"ciphertext\x18\x05 \x01(\fR\n" +
 	"ciphertext\x12\x14\n" +
-	"\x05nonce\x18\x05 \x01(\fR\x05nonce\x12\x19\n" +
-	"\bauth_tag\x18\x06 \x01(\fR\aauthTag\x12\x1c\n" +
-	"\ttimestamp\x18\a \x01(\x03R\ttimestamp\x12#\n" +
-	"\x04type\x18\b \x01(\x0e2\x0f.pb.MessageTypeR\x04type\"\xb7\x01\n" +
+	"\x05nonce\x18\x06 \x01(\fR\x05nonce\x12\x19\n" +
+	"\bauth_tag\x18\a \x01(\fR\aauthTag\x12\x1c\n" +
+	"\ttimestamp\x18\b \x01(\x03R\ttimestamp\x12#\n" +
+	"\x04type\x18\t \x01(\x0e2\x0f.pb.MessageTypeR\x04type\"\xdf\x01\n" +
 	"\x0fDeliveryReceipt\x12\x1d\n" +
 	"\n" +
 	"message_id\x18\x01 \x01(\tR\tmessageId\x12\x1b\n" +
-	"\tsender_id\x18\x02 \x01(\tR\bsenderId\x12\x1f\n" +
-	"\vreceiver_id\x18\x03 \x01(\tR\n" +
+	"\tsender_id\x18\x02 \x01(\tR\bsenderId\x12&\n" +
+	"\x0fsender_shade_id\x18\x03 \x01(\tR\rsenderShadeId\x12\x1f\n" +
+	"\vreceiver_id\x18\x04 \x01(\tR\n" +
 	"receiverId\x12)\n" +
-	"\x06status\x18\x04 \x01(\x0e2\x11.pb.ReceiptStatusR\x06status\x12\x1c\n" +
-	"\ttimestamp\x18\x05 \x01(\x03R\ttimestamp\"\x80\x01\n" +
+	"\x06status\x18\x05 \x01(\x0e2\x11.pb.ReceiptStatusR\x06status\x12\x1c\n" +
+	"\ttimestamp\x18\x06 \x01(\x03R\ttimestamp\"\x80\x01\n" +
 	"\x10WebSocketMessage\x120\n" +
 	"\apayload\x18\x01 \x01(\v2\x14.pb.EncryptedPayloadH\x00R\apayload\x12/\n" +
 	"\areceipt\x18\x02 \x01(\v2\x13.pb.DeliveryReceiptH\x00R\areceiptB\t\n" +
@@ -409,27 +428,27 @@ const file_message_proto_rawDesc = "" +
 	"\x04READ\x10\x01B\x06Z\x04./pbb\x06proto3"
 
 var (
-	file_message_proto_rawDescOnce sync.Once
-	file_message_proto_rawDescData []byte
+	file_proto_message_proto_rawDescOnce sync.Once
+	file_proto_message_proto_rawDescData []byte
 )
 
-func file_message_proto_rawDescGZIP() []byte {
-	file_message_proto_rawDescOnce.Do(func() {
-		file_message_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_message_proto_rawDesc), len(file_message_proto_rawDesc)))
+func file_proto_message_proto_rawDescGZIP() []byte {
+	file_proto_message_proto_rawDescOnce.Do(func() {
+		file_proto_message_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_proto_message_proto_rawDesc), len(file_proto_message_proto_rawDesc)))
 	})
-	return file_message_proto_rawDescData
+	return file_proto_message_proto_rawDescData
 }
 
-var file_message_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_message_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
-var file_message_proto_goTypes = []any{
+var file_proto_message_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_proto_message_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_proto_message_proto_goTypes = []any{
 	(MessageType)(0),         // 0: pb.MessageType
 	(ReceiptStatus)(0),       // 1: pb.ReceiptStatus
 	(*EncryptedPayload)(nil), // 2: pb.EncryptedPayload
 	(*DeliveryReceipt)(nil),  // 3: pb.DeliveryReceipt
 	(*WebSocketMessage)(nil), // 4: pb.WebSocketMessage
 }
-var file_message_proto_depIdxs = []int32{
+var file_proto_message_proto_depIdxs = []int32{
 	0, // 0: pb.EncryptedPayload.type:type_name -> pb.MessageType
 	1, // 1: pb.DeliveryReceipt.status:type_name -> pb.ReceiptStatus
 	2, // 2: pb.WebSocketMessage.payload:type_name -> pb.EncryptedPayload
@@ -441,12 +460,12 @@ var file_message_proto_depIdxs = []int32{
 	0, // [0:4] is the sub-list for field type_name
 }
 
-func init() { file_message_proto_init() }
-func file_message_proto_init() {
-	if File_message_proto != nil {
+func init() { file_proto_message_proto_init() }
+func file_proto_message_proto_init() {
+	if File_proto_message_proto != nil {
 		return
 	}
-	file_message_proto_msgTypes[2].OneofWrappers = []any{
+	file_proto_message_proto_msgTypes[2].OneofWrappers = []any{
 		(*WebSocketMessage_Payload)(nil),
 		(*WebSocketMessage_Receipt)(nil),
 	}
@@ -454,18 +473,18 @@ func file_message_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_message_proto_rawDesc), len(file_message_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_message_proto_rawDesc), len(file_proto_message_proto_rawDesc)),
 			NumEnums:      2,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_message_proto_goTypes,
-		DependencyIndexes: file_message_proto_depIdxs,
-		EnumInfos:         file_message_proto_enumTypes,
-		MessageInfos:      file_message_proto_msgTypes,
+		GoTypes:           file_proto_message_proto_goTypes,
+		DependencyIndexes: file_proto_message_proto_depIdxs,
+		EnumInfos:         file_proto_message_proto_enumTypes,
+		MessageInfos:      file_proto_message_proto_msgTypes,
 	}.Build()
-	File_message_proto = out.File
-	file_message_proto_goTypes = nil
-	file_message_proto_depIdxs = nil
+	File_proto_message_proto = out.File
+	file_proto_message_proto_goTypes = nil
+	file_proto_message_proto_depIdxs = nil
 }
