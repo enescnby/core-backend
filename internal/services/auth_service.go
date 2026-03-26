@@ -92,6 +92,7 @@ func (s *authService) LoginInit(req *dto.LoginInitRequest) (*dto.LoginInitRespon
 
 	return &dto.LoginInitResponse{
 		EncryptedIdentityPrivateKey: user.Key.EncryptedIdentityPrivateKey,
+		EncryptedEncryptionPrivateKey: user.Key.EncryptedEncryptionPrivateKey,
 		Salt:                        user.Key.Salt,
 		Challenge:                   challenge,
 	}, nil

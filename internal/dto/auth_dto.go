@@ -22,6 +22,7 @@ type LoginInitRequest struct {
 
 type LoginInitResponse struct {
 	EncryptedIdentityPrivateKey string `json:"encrypted_identity_private_key"`
+	EncryptedEncryptionPrivateKey string `json:"encrypted_encryption_private_key"`
 	Salt                        string `json:"salt"`
 	Challenge                   string `json:"challenge"`
 }
